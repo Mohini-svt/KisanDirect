@@ -8,12 +8,10 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-const [error, setError] = useState("");
-const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-
-
-const handleLogin = (event) => {
+  {/*const handleLogin = (event) => {
   event.preventDefault();
 
   setError("");
@@ -33,7 +31,41 @@ const handleLogin = (event) => {
   loginUser(loginData);
 
   setSuccess("Login successful!");
-};
+};*/}
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    setError("");
+    setSuccess("");
+
+    if (!email || !password) {
+      setError("Please fill in all fields!");
+      return;
+    }
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          role: role.toLowerCase(),
+        }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setSuccess("Login Successful!");
+        console.log("Logged in user details:", data.user);
+      } else {
+        setError(data.error || "Login Failed. Please check you details.");
+      }
+    } catch (err) {
+      console.error("Backend error:", err);
+      setError("Cannot connect to Django backend.Ensure server is running!");
+    }
+  };
 
 
 
@@ -59,9 +91,9 @@ const handleLogin = (event) => {
           </button>
         </div>
 
-{error && <p className="error-message">{error}</p>}
+        {error && <p className="error-message">{error}</p>}
 
-{success && <p className="success-message">{success}</p>}
+        {success && <p className="success-message">{success}</p>}
 
 
 
