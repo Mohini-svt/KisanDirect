@@ -1,12 +1,13 @@
 import { loginUser } from "../api/auth";
 import { useState } from "react";
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
 
 function Login() {
   const [role, setRole] = useState("Farmer");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
 const [error, setError] = useState("");
 const [success, setSuccess] = useState("");
@@ -29,10 +30,16 @@ const handleLogin = (event) => {
     password,
     role,
   };
+loginUser(loginData);
 
-  loginUser(loginData);
+if (role === "Farmer") {
+  navigate("/farmer/dashboard");
+} else if (role === "Buyer") {
+  navigate("/buyer/dashboard");
+}
 
-  setSuccess("Login successful!");
+
+
 };
 
 
