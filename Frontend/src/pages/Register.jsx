@@ -11,10 +11,10 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [error, setError] = useState("");
-const [success, setSuccess] = useState("");
+  const [success, setSuccess] = useState("");
 
-  
-const handleRegister = (event) => {
+
+  {/*const handleRegister = (event) => {
   event.preventDefault();
 
   setError("");
@@ -35,8 +35,48 @@ const handleRegister = (event) => {
   registerUser(userData);
 
   setSuccess("Registration successful!");
-};
+};*/}
+  const handleRegister = async (event) => {
+    event.preventDefault();
 
+    setError("");
+    setSuccess("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/register/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          role: role.toLowerCase(), // Ensures "farmer" or "buyer" format matches Django choices
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess("Registration successful!");
+        console.log("Registered user:", data.user);
+      } else {
+        // Formats error messages returned by Django serializer
+        const errorMessage = typeof data === 'object'
+          ? Object.values(data).flat().join(" ")
+          : "Registration failed.";
+        setError(errorMessage);
+      }
+    } catch (err) {
+      console.error("Backend error:", err);
+      setError("Cannot connect to Django backend. Ensure server is running!");
+    }
+  };
 
 
   return (
@@ -62,9 +102,9 @@ const handleRegister = (event) => {
         </div>
 
 
-{error && <p className="error-message">{error}</p>}
+        {error && <p className="error-message">{error}</p>}
 
-{success && <p className="success-message">{success}</p>}
+        {success && <p className="success-message">{success}</p>}
 
 
 
