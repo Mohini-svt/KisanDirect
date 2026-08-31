@@ -11,8 +11,8 @@ import BuyerDashboard from "./pages/Buyer/BuyerDashboard";
 import CropDetails from "./pages/Buyer/CropDetails";
    
 
-      function App() {
-       return (
+ function App() {
+    return (
 
       
 <Routes>
