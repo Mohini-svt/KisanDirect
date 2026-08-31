@@ -24,10 +24,10 @@ import CropDetails from "./pages/Buyer/CropDetails";
   <Route path="/admin/orders" element={<OrderMonitoring />} />
   <Route path="/admin/logistics" element={<LogisticsStatus />}
          />
-  <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
+  <Route path="/farmer/dashboard"element={<FarmerDashboard />} />
 
-  <Route path="/buyer/dashboard" element={<BuyerDashboard />} />
-  <Route path="/buyer/crop/:id" element={<CropDetails />} />
+  <Route path="/buyer/dashboard"element={<BuyerDashboard />} />
+  <Route path="/buyer/crop/:id"element={<CropDetails />} />
 
 </Routes>
 

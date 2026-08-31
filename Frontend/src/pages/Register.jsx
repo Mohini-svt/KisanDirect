@@ -1,9 +1,11 @@
 import { registerUser } from "../api/auth";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import "./Register.css";
 
 function Register() {
+  const navigate = useNavigate();
+
   const [role, setRole] = useState("farmer");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -11,7 +13,7 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [error, setError] = useState("");
-const [success, setSuccess] = useState("");
+  const [success, setSuccess] = useState("");
 
   
 const handleRegister = (event) => {
@@ -35,6 +37,12 @@ const handleRegister = (event) => {
   registerUser(userData);
 
   setSuccess("Registration successful!");
+
+  if (role === "farmer") {
+    navigate("/farmer/dashboard");
+  } else if (role === "buyer") {
+    navigate("/buyer/dashboard");
+  }
 };
 
 
@@ -46,19 +54,25 @@ const handleRegister = (event) => {
         <p>Create your account</p>
 
         <div className="role-selection">
-          <button
-            className={role === "farmer" ? "active" : ""}
-            onClick={() => setRole("farmer")}
-          >
-            Farmer
-          </button>
+          
+<button
+  type="button"
+  className={role === "farmer" ? "active" : ""}
+  onClick={() => setRole("farmer")}
+>
+  Farmer
+</button>
 
-          <button
-            className={role === "buyer" ? "active" : ""}
-            onClick={() => setRole("buyer")}
-          >
-            Buyer
-          </button>
+<button
+  type="button"
+  className={role === "buyer" ? "active" : ""}
+  onClick={() => setRole("buyer")}
+>
+  Buyer
+</button>
+
+
+
         </div>
 
 
