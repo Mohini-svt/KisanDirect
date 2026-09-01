@@ -1,0 +1,209 @@
+.farmer-dashboard {
+  min-height: 100vh;
+  background: #eef3ef;
+  padding: 40px 20px;
+  font-family: Arial, sans-serif;
+}
+
+.farmer-dashboard h1 {
+  text-align: center;
+  color: #2f6b3b;
+  margin-bottom: 30px;
+}
+
+.dashboard-container {
+  max-width: 950px;
+  margin: auto;
+}
+
+.add-crop-section,
+.crop-list-section {
+  background: white;
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 30px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.add-crop-section h2,
+.crop-list-section h2 {
+  color: #2f6b3b;
+  margin-bottom: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 7px;
+  color: #333;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 1px solid #d1d5d1;
+  border-radius: 7px;
+  font-size: 15px;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #2f6b3b;
+  box-shadow: 0 0 0 3px rgba(47, 107, 59, 0.12);
+}
+
+.add-crop-section form > button {
+  background: #2f6b3b;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 7px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.add-crop-section form > button:hover {
+  background: #24552e;
+}
+
+.crop-list-section {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th {
+  background: #2f6b3b;
+  color: white;
+  text-align: left;
+  padding: 14px;
+}
+
+td {
+  padding: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+tbody tr:hover {
+  background: #f6faf7;
+}
+
+.delete-btn {
+  background: #c0392b;
+  color: white;
+  border: none;
+  padding: 8px 13px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #a93226;
+}
+
+@media (max-width: 600px) {
+  .farmer-dashboard {
+    padding: 25px 12px;
+  }
+
+  .add-crop-section,
+  .crop-list-section {
+    padding: 18px;
+  }
+
+  .farmer-dashboard h1 {
+    font-size: 24px;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+
+/* --- Add these rules to your existing FarmerDashboard.css --- */
+
+.voice-guide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  margin-bottom: 15px;
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.voice-guide-btn:hover:not(:disabled) {
+  background-color: #256428;
+}
+
+.voice-guide-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.voice-guide-btn:disabled {
+  cursor: not-allowed;
+}
+
+.voice-guide-btn.listening {
+  background-color: #c62828;
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(198, 40, 40, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(198, 40, 40, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(198, 40, 40, 0);
+  }
+}
+
+.voice-status {
+  font-size: 14px;
+  color: #2e7d32;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.home-button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.home-button:hover {
+  opacity: 0.9;
+}

@@ -1,9 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import { registerUser } from "../api/auth";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
 
 function Register() {
+  const navigate = useNavigate();
+
   const [role, setRole] = useState("farmer");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -12,7 +15,6 @@ function Register() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -44,7 +46,20 @@ function Register() {
 
       if (response.ok) {
         setSuccess("Registration successful!");
-        console.log("Registered user:", data.user);
+        if (data.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+          localStorage.setItem("role", role.toLowerCase());
+        }
+        // 2. Automatically redirect 
+        setTimeout(() => {
+          if (role.toLowerCase() === "buyer") {
+            navigate("/buyer/dashboard");
+          } else if (role.toLowerCase() === "farmer") {
+            navigate("/farmer/dashboard");
+          } else {
+            navigate("/login");
+          }
+        }, 1000); // 1 second delay so they see "Registration successful!"
       } else {
         // Formats error messages returned by Django serializer
         const errorMessage =
@@ -251,5 +266,4 @@ function Register() {
   );
 }
 
-export default Register;   
- 
+export default Register;
