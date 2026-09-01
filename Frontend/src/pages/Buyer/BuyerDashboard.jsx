@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./BuyerDashboard.css";
 
 function BuyerDashboard() {
 
   const [searchTerm, setSearchTerm] = useState("");
-const [maxPrice, setMaxPrice] = useState("");
-const [minQuantity, setMinQuantity] = useState("");
-const navigate = useNavigate();
+  const [maxPrice, setMaxPrice] = useState("");
+  const [minQuantity, setMinQuantity] = useState("");
+  const navigate = useNavigate();
 
-  const crops = [
+  //dummydata
+  {/*const crops = [
     {
       id: 1,
       cropName: "Potato",
@@ -31,21 +32,33 @@ const navigate = useNavigate();
       quantity: 200,
       rate: 35,
     },
-  ];
+  ];*/}
+  
+  const [crops, setCrops] = useState([]);
 
-const filteredCrops = crops.filter((crop) => {
-  const matchesSearch = crop.cropName
-    .toLowerCase()
-    .includes(searchTerm.toLowerCase());
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/crops/")
+      .then((res) => res.json())
+      .then((data) => setCrops(data))
+      .catch((err) => console.error("Error fetching crops:", err));
+  }, []);
 
-  const matchesPrice =
-    maxPrice === "" || crop.rate <= Number(maxPrice);
+  const filteredCrops = crops.filter((crop) => {
+    const cropTitle = crop.name || crop.cropName || "";
+    const cropRate = Number(crop.price_per_kg || crop.price || crop.rate || 0);
 
-  const matchesQuantity =
-    minQuantity === "" || crop.quantity >= Number(minQuantity);
+    const matchesSearch = cropTitle
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
 
-  return matchesSearch && matchesPrice && matchesQuantity;
-});
+    const matchesPrice =
+      maxPrice === "" || cropRate <= Number(maxPrice);
+
+    const matchesQuantity =
+      minQuantity === "" || crop.quantity >= Number(minQuantity);
+
+    return matchesSearch && matchesPrice && matchesQuantity;
+  });
 
 
   return (
@@ -56,58 +69,57 @@ const filteredCrops = crops.filter((crop) => {
       <div className="buyer-content">
         <h2>Available Crops</h2>
 
-<div className="filters">
-  <input
-    type="text"
-    placeholder="Search crops..."
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-  />
+        <div className="filters">
+          <input
+            type="text"
+            placeholder="Search crops..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
 
-  <input
-    type="number"
-    placeholder="Maximum price (₹/kg)"
-    value={maxPrice}
-    onChange={(e) => setMaxPrice(e.target.value)}
-  />
+          <input
+            type="number"
+            placeholder="Maximum price (₹/kg)"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+          />
 
-  <input
-    type="number"
-    placeholder="Minimum quantity (kg)"
-    value={minQuantity}
-    onChange={(e) => setMinQuantity(e.target.value)}
-  />
-</div> 
+          <input
+            type="number"
+            placeholder="Minimum quantity (kg)"
+            value={minQuantity}
+            onChange={(e) => setMinQuantity(e.target.value)}
+          />
+        </div>
 
 
-  <div className="crop-list">
-  {filteredCrops.length > 0 ? (
-    filteredCrops.map((crop) => (
-      <div className="crop-card" key={crop.id}>
-        <h3>{crop.cropName}</h3>
+        <div className="crop-list">
+          {filteredCrops.length > 0 ? (
+            filteredCrops.map((crop) => (
+              <div className="crop-card" key={crop.id}>
+                <h3>{crop.name || crop.cropName}</h3>
+                <p>
+                  <strong>Farmer:</strong> {crop.farmer || crop.farmerName || crop.description || "Farmer"}
+                </p>
 
-        <p>
-          <strong>Farmer:</strong> {crop.farmerName}
-        </p>
+                <p>
+                  <strong>Quantity:</strong> {crop.quantity} kg
+                </p>
 
-        <p>
-          <strong>Quantity:</strong> {crop.quantity} kg
-        </p>
+                <p>
+                  <strong>Rate:</strong> ₹{crop.price || crop.rate}/kg
+                </p>
+                <button onClick={() => navigate(`/buyer/crop/${crop.id}`)}>
+                  View Details
+                </button>
 
-        <p>
-          <strong>Rate:</strong> ₹{crop.rate}/kg
-        </p>
-<button onClick={() => navigate(`/buyer/crop/${crop.id}`)}>
-  View Details
-</button>
-        
 
-      </div>
-    ))
-  ) : (
-    <p className="no-crops">No crops found.</p>
-  )}
-</div>
+              </div>
+            ))
+          ) : (
+            <p className="no-crops">No crops found.</p>
+          )}
+        </div>
 
 
 

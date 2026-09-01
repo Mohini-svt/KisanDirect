@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./CropDetails.css";
 
@@ -5,7 +6,30 @@ function CropDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const crops = [
+  const [crop, setCrop] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/api/crops/${id}/')
+      .then((res) => {
+        if (!res.ok)
+          throw new Error("Crop details not found");
+        return res.json();
+      })
+      .then((data) => {
+        setCrop(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching crop details:", err);
+        setError("Failed tp load crop details.");
+        setLoading(false);
+      });
+  }, [id]);
+
+  //dummy data
+  {/*const crops = [
     {
       id: "1",
       cropName: "Potato",
@@ -33,9 +57,9 @@ function CropDetails() {
       location: "Darbhanga",
       description: "High quality wheat harvested this season.",
     },
-  ];
+  ];*/}
 
-  const crop = crops.find((item) => item.id === id);
+  {/*const crop = crops.find((item) => item.id === id);*/}
 
   if (!crop) {
     return (
@@ -51,7 +75,7 @@ function CropDetails() {
   }
 
   const handleOrder = () => {
-    alert(`Order placed successfully for ${crop.cropName}!`);
+    alert(`Order placed successfully for ${crop.name || crop.cropName}!`);
   };
 
   return (
@@ -65,11 +89,11 @@ function CropDetails() {
           ← Back to Marketplace
         </button>
 
-        <h1>{crop.cropName}</h1>
+        <h1>{crop.name || crop.cropName}</h1>
 
         <div className="crop-info">
           <p>
-            <strong>Farmer:</strong> {crop.farmerName}
+            <strong>Farmer:</strong> {crop.farmer || crop.farmerName}
           </p>
 
           <p>
@@ -77,7 +101,7 @@ function CropDetails() {
           </p>
 
           <p>
-            <strong>Price:</strong> ₹{crop.rate}/kg
+            <strong>Price:</strong> ₹{crop.price || crop.rate}/kg
           </p>
 
           <p>
