@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from .models import User, Crop, Order, Logistics
 
 User = get_user_model()
 
@@ -27,3 +28,25 @@ class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
     role = serializers.CharField()
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields =['id','email','role','is_active']
+
+class CropSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Crop
+        fields ='__all__'
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields ='__all__'
+
+class LogisticsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Logistics
+        fields ='__all__'
+
+        

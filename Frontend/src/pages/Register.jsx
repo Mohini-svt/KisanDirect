@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { registerUser } from "../api/auth";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -13,6 +14,7 @@ function Register() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const navigate = useNavigate();
 
   {/*const handleRegister = (event) => {
   event.preventDefault();
@@ -64,7 +66,20 @@ function Register() {
 
       if (response.ok) {
         setSuccess("Registration successful!");
-        console.log("Registered user:", data.user);
+        if (data.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+          localStorage.setItem("role", role.toLowerCase());
+        }
+        // 2. Automatically redirect 
+        setTimeout(() => {
+          if (role.toLowerCase() === "buyer") {
+            navigate("/buyer/dashboard");
+          } else if (role.toLowerCase() === "farmer") {
+            navigate("/farmer/dashboard");
+          } else {
+            navigate("/login");
+          }
+        }, 1000); // 1 second delay so they see "Registration successful!"
       } else {
         // Formats error messages returned by Django serializer
         const errorMessage = typeof data === 'object'

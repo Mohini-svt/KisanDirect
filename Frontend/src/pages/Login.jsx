@@ -1,7 +1,7 @@
+import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../api/auth";
 import { useState } from "react";
 import "./Login.css";
-import { Link , useNavigate } from "react-router-dom";
 
 function Login() {
   const [role, setRole] = useState("Farmer");
@@ -46,10 +46,6 @@ if (role === "Farmer") {
     setError("");
     setSuccess("");
 
-    if (!email || !password) {
-      setError("Please fill in all fields!");
-      return;
-    }
     try {
       const response = await fetch("http://127.0.0.1:8000/api/login/", {
         method: "POST",
@@ -62,16 +58,26 @@ if (role === "Farmer") {
           role: role.toLowerCase(),
         }),
       });
+
       const data = await response.json();
       if (response.ok) {
         setSuccess("Login Successful!");
-        console.log("Logged in user details:", data.user);
+        localStorage.setItem("user", JSON.stringify(data.user || data));
+
+        const userRole = (data.user?.role || data.role || role).toLowerCase();
+
+        setTimeout(() => {
+          if (userRole === "farmer") navigate("/farmer");
+          else if (userRole === "buyer") navigate("/buyer");
+          else if (userRole === "admin") navigate("/admin");
+          else navigate("/");
+        }, 1000);
       } else {
-        setError(data.error || "Login Failed. Please check you details.");
+        setError(data.error || "Login Failed. Please check your details.");
       }
     } catch (err) {
       console.error("Backend error:", err);
-      setError("Cannot connect to Django backend.Ensure server is running!");
+      setError("Cannot connect to Django backend. Ensure server is running!");
     }
   };
 

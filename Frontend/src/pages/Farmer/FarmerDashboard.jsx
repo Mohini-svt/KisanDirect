@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./FarmerDashboard.css";
 
 function FarmerDashboard() {
@@ -9,7 +9,23 @@ function FarmerDashboard() {
 
   const [crops, setCrops] = useState([]);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    fetchCrops();
+  }, []);
+
+  const fetchCrops = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/crops/");
+      if (response.ok) {
+        const data = await response.json();
+        setCrops(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch crops:", err);
+    }
+  };
+
+  {/*const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!farmerName || !cropName || !quantity || !rate) {
@@ -31,10 +47,64 @@ function FarmerDashboard() {
     setCropName("");
     setQuantity("");
     setRate("");
+  };*/}
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!farmerName || !cropName || !quantity || !rate) {
+      alert("Please fill in all fields");
+      return;
+    }
+    const loggedInUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+    const newCrop = {
+      farmer: loggedInUser.id || 1,      // Maps to Django's farmer ForeignKey
+      name: cropName,                    // Maps to Django's name field
+      quantity: parseInt(quantity),      // Maps to Django's quantity
+      price_per_kg: parseFloat(rate),   // Maps to Django's price_per_kg
+    };
+   {/* const newCrop = {
+      name: cropName,
+      price: parseFloat(rate),
+      quantity: parseInt(quantity),
+      location: "Default Location", // Required by model if non-nullable
+      description: `Farmer: ${farmerName}`,
+    };*/}
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/crops/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newCrop),
+      });
+
+      if (response.ok) {
+        alert("Crop added to database successfully!");
+        setFarmerName("");
+        setCropName("");
+        setQuantity("");
+        setRate("");
+        fetchCrops(); // Refresh table list instantly
+      } else {
+        alert("Failed to save crop to backend.");
+      }
+    } catch (err) {
+      console.error("Error adding crop:", err);
+    }
   };
 
-  const deleteCrop = (id) => {
-    setCrops(crops.filter((crop) => crop.id !== id));
+
+  const deleteCrop = async (id) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/crops/${id}/`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        setCrops(crops.filter((crop) => crop.id !== id));
+      }
+    } catch (err) {
+      console.error("Failed to delete crop:", err);
+    }
   };
 
   return (
@@ -112,10 +182,10 @@ function FarmerDashboard() {
               ) : (
                 crops.map((crop) => (
                   <tr key={crop.id}>
-                    <td>{crop.farmerName}</td>
-                    <td>{crop.cropName}</td>
+                    <td>{crop.farmerName || crop.description || "N/A"}</td>
+                    <td>{crop.name || crop.cropname}</td>
                     <td>{crop.quantity} kg</td>
-                    <td>₹{crop.rate}/kg</td>
+                    <td>₹{crop.price || crop.rate}/kg</td>
                     <td>
                       <button
                         className="delete-btn"
