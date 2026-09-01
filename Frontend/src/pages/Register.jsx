@@ -79,6 +79,12 @@ function Register() {
   return (
     <div className="register-container">
       <div className="register-box">
+
+        <Link to="/" className="home-link">
+          ← Back to Home
+        </Link>
+
+
         <div className="brand">
           {/* leaf mark */}
           <svg
@@ -259,7 +265,7 @@ function Register() {
         </form>
 
         <p className="login-text">
-          Already have an account? <Link to="/">Login</Link>
+          Already have an account? <Link to="/login">Login</Link>
         </p>
       </div>
     </div>

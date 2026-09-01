@@ -69,14 +69,17 @@ if (role === "Farmer") {
       const data = await response.json();
       if (response.ok) {
         setSuccess("Login Successful!");
+
+        console.log("Logged in user details:", data.user);
+
         localStorage.setItem("user", JSON.stringify(data.user || data));
 
         const userRole = (data.user?.role || data.role || role).toLowerCase();
 
         setTimeout(() => {
-          if (userRole === "farmer") navigate("/farmer");
-          else if (userRole === "buyer") navigate("/buyer");
-          else if (userRole === "admin") navigate("/admin");
+          if (userRole === "farmer") navigate("/farmer/dashboard");
+          else if (userRole === "buyer") navigate("/buyer/dashboard");
+          else if (userRole === "admin") navigate("/admin/dashboard");
           else navigate("/");
         }, 1000);
       } else {
@@ -93,6 +96,10 @@ if (role === "Farmer") {
   return (
     <div className="login-container">
       <div className="login-box">
+
+        <Link to="/" className="home-link">
+          ← Back to Home
+        </Link>
         <div className="brand">
           {/* leaf mark */}
           <svg

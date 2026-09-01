@@ -1,0 +1,475 @@
+.kd-page * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.kd-page {
+    background: #f7faf7;
+    color: #17351f;
+}
+
+/* ================= NAVBAR ================= */
+
+.kd-page nav {
+    width: 100%;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 7%;
+    background: #ffffff;
+    border-bottom: 1px solid #e8eee9;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.kd-page .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: 800;
+    color: #16713b;
+}
+
+.kd-page .logo-icon {
+    width: 40px;
+    height: 40px;
+    background: #e9f7ed;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.kd-page .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+}
+
+.kd-page .nav-links a {
+    text-decoration: none;
+    color: #425b49;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.kd-page .nav-links a:hover {
+    color: #16823f;
+}
+
+.kd-page .nav-btn {
+    text-decoration: none;
+    background: #16823f;
+    color: white;
+    padding: 11px 22px;
+    border-radius: 9px;
+    font-weight: 600;
+}
+
+/* ================= HERO ================= */
+
+.kd-page .hero {
+    min-height: 520px;
+    padding: 90px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(247,250,247,.94) 0%,
+            rgba(247,250,247,.85) 100%
+        ),
+        url("https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1600&q=80");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.kd-page .hero-content {
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.kd-page .tag {
+    display: inline-block;
+    background: #e4f5e8;
+    color: #16713b;
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.kd-page .hero h1 {
+    font-size: clamp(42px, 5vw, 68px);
+    line-height: 1.05;
+    margin-bottom: 22px;
+    color: #153d22;
+}
+
+.kd-page .hero h1 span {
+    color: #16823f;
+}
+
+.kd-page .hero p {
+    font-size: 18px;
+    line-height: 1.7;
+    color: #53645a;
+    max-width: 570px;
+    margin: 0 auto 30px;
+}
+
+.kd-page .hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.kd-page .primary-btn,
+.kd-page .secondary-btn {
+    padding: 14px 24px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s;
+}
+
+.kd-page .primary-btn {
+    background: #16823f;
+    color: white;
+}
+
+.kd-page .primary-btn:hover {
+    background: #0e6931;
+    transform: translateY(-2px);
+}
+
+.kd-page .secondary-btn {
+    background: white;
+    color: #176d38;
+    border: 1px solid #b9d8c1;
+}
+
+.kd-page .secondary-btn:hover {
+    background: #eff9f1;
+}
+
+/* ================= STATS ================= */
+
+.kd-page .stats {
+    padding: 55px 7%;
+    background: white;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.kd-page .stat {
+    text-align: center;
+    padding: 15px;
+}
+
+.kd-page .stat h2 {
+    color: #16823f;
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.kd-page .stat p {
+    color: #68756d;
+    font-size: 14px;
+}
+
+/* ================= HOW IT WORKS ================= */
+
+.kd-page .section {
+    padding: 85px 7%;
+}
+
+.kd-page .section-heading {
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto 50px;
+}
+
+.kd-page .section-heading h2 {
+    font-size: 38px;
+    margin-bottom: 12px;
+    color: #153d22;
+}
+
+.kd-page .section-heading p {
+    color: #66756b;
+    line-height: 1.6;
+}
+
+.kd-page .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.kd-page .step {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid #e5eee7;
+    transition: .25s;
+}
+
+.kd-page .step:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(31,75,43,.09);
+}
+
+.kd-page .step-number {
+    width: 48px;
+    height: 48px;
+    background: #e5f6e9;
+    color: #16823f;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.kd-page .step h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.kd-page .step p {
+    color: #68756d;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+/* ---- Admin note (separate flow, called out below the main steps) ---- */
+
+.kd-page .admin-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    max-width: 800px;
+    margin: 35px auto 0;
+    padding: 24px 28px;
+    background: #f2f8f3;
+    border: 1px solid #dcece0;
+    border-radius: 16px;
+}
+
+.kd-page .admin-note-icon {
+    font-size: 26px;
+    line-height: 1;
+}
+
+.kd-page .admin-note h4 {
+    font-size: 16px;
+    margin-bottom: 6px;
+    color: #153d22;
+}
+
+.kd-page .admin-note p {
+    color: #556158;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+/* ================= FEATURES ================= */
+
+.kd-page .features {
+    background: #eef8f0;
+}
+
+.kd-page .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.kd-page .feature {
+    background: white;
+    padding: 27px;
+    border-radius: 15px;
+}
+
+.kd-page .feature-icon {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.kd-page .feature h3 {
+    margin-bottom: 9px;
+}
+
+.kd-page .feature p {
+    color: #68756d;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+/* ================= CTA ================= */
+
+.kd-page .cta {
+    margin: 0 7% 80px;
+    padding: 55px;
+    border-radius: 22px;
+    background: #167a3b;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+
+.kd-page .cta h2 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.kd-page .cta p {
+    color: #d9f1df;
+    max-width: 600px;
+}
+
+.kd-page .cta a {
+    background: white;
+    color: #167a3b;
+    text-decoration: none;
+    padding: 14px 25px;
+    border-radius: 9px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* ================= FOOTER ================= */
+
+.kd-page footer {
+    background: #102b19;
+    color: white;
+    padding: 35px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kd-page footer p {
+    color: #a9b9ad;
+    font-size: 13px;
+}
+
+.kd-page .footer-logo {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+    .kd-page .nav-links {
+        display: none;
+    }
+
+    .kd-page .hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 55px;
+    }
+
+    .kd-page .hero p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .kd-page .hero-buttons {
+        justify-content: center;
+    }
+
+    .kd-page .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .kd-page .steps {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .kd-page .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .kd-page .cta {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 25px;
+    }
+
+    .kd-page .admin-note {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .kd-page nav {
+        padding: 0 5%;
+    }
+
+    .kd-page .nav-btn {
+        padding: 9px 15px;
+        font-size: 13px;
+    }
+
+    .kd-page .hero {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .kd-page .stats {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .kd-page .section {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .kd-page .section-heading h2 {
+        font-size: 30px;
+    }
+
+    .kd-page .steps {
+        grid-template-columns: 1fr;
+    }
+
+    .kd-page .cta {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}
