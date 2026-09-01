@@ -10,10 +10,13 @@ import BuyerDashboard from "./pages/Buyer/BuyerDashboard";
 import CropDetails from "./pages/Buyer/CropDetails";
 
 
+
 function App() {
   return (
 
     <Routes>
+
+
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
