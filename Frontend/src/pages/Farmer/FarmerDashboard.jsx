@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./FarmerDashboard.css";
 
 function FarmerDashboard() {
+  const navigate = useNavigate();
   const [farmerName, setFarmerName] = useState("");
   const [cropName, setCropName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [rate, setRate] = useState("");
   const [crops, setCrops] = useState([]);
+  
 
   const [voiceActive, setVoiceActive] = useState(false);
   const [voiceStatus, setVoiceStatus] = useState("");
@@ -275,7 +278,20 @@ function FarmerDashboard() {
 
   return (
     <div className="farmer-dashboard">
-      <h1>🌱 KisanDirect Farmer Dashboard</h1>
+    
+        <div className="dashboard-header">
+        <h1>🌱 KisanDirect Farmer Dashboard</h1>
+
+      <button
+        className="home-button"
+        onClick={() => navigate("/")}
+              >
+          ← Home
+      </button>
+    </div>
+
+
+
 
       <div className="dashboard-container">
         <div className="add-crop-section">

@@ -1,4 +1,4 @@
-
+import { useNavigate } from "react-router-dom";
  import AdminSidebar from "../../components/Admin/AdminSidebar";
 import "./AdminDashboard.css";
 
@@ -31,6 +31,7 @@ const stats = [
 
 
 function AdminDashboard() {
+  const navigate = useNavigate();
     
     return (
   <div className="admin-layout">
@@ -38,9 +39,18 @@ function AdminDashboard() {
 
     <main className="admin-content">
       <div className="dashboard-header">
-        <h1>Admin Dashboard</h1>
-        <p>Overview of KisanDirect platform</p>
-      </div>
+
+        <div>
+    <h1>Admin Dashboard</h1>
+    <p>Overview of KisanDirect platform</p>
+     </div>
+  <button
+    className="admin-home-button"
+    onClick={() => navigate("/")}
+          >
+          ← Home
+        </button>
+       </div>
 
       <div className="stats-container">
         {stats.map((stat) => (

@@ -63,8 +63,18 @@ function BuyerDashboard() {
 
   return (
     <div className="buyer-dashboard">
+      <div className="dashboard-header">
+    </div>
       <h1>🛒 KisanDirect Marketplace</h1>
       <p>Explore fresh crops directly from farmers</p>
+
+<button
+      className="home-button"
+      onClick={() => navigate("/")}
+               >
+           ← Home
+       </button>
+
 
       <div className="buyer-content">
         <h2>Available Crops</h2>
