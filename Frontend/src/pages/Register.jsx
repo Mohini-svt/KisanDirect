@@ -13,6 +13,7 @@ function Register() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -49,6 +50,7 @@ function Register() {
       return;
     }
 
+    setLoading(true);
     try {
       const response = await fetch("http://127.0.0.1:8000/api/register/", {
         method: "POST",
@@ -56,6 +58,7 @@ function Register() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          name: name,
           email: email,
           password: password,
           role: role.toLowerCase(), // Ensures "farmer" or "buyer" format matches Django choices
@@ -82,82 +85,199 @@ function Register() {
         }, 1000); // 1 second delay so they see "Registration successful!"
       } else {
         // Formats error messages returned by Django serializer
-        const errorMessage = typeof data === 'object'
-          ? Object.values(data).flat().join(" ")
-          : "Registration failed.";
+        const errorMessage =
+          typeof data === "object"
+            ? Object.values(data).flat().join(" ")
+            : "Registration failed.";
         setError(errorMessage);
       }
     } catch (err) {
       console.error("Backend error:", err);
       setError("Cannot connect to Django backend. Ensure server is running!");
+    } finally {
+      setLoading(false);
     }
   };
-
 
   return (
     <div className="register-container">
       <div className="register-box">
-        <h1>KisanDirect</h1>
+        <div className="brand">
+          {/* leaf mark */}
+          <svg
+            className="brand-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 20c8 0 16-6 16-16C10 4 4 12 4 20Z"
+              fill="currentColor"
+            />
+            <path
+              d="M4 20c4-4 8-8 16-16"
+              stroke="#fff"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              opacity="0.55"
+            />
+          </svg>
+          <h1>KisanDirect</h1>
+        </div>
         <p>Create your account</p>
 
         <div className="role-selection">
           <button
-            className={role === "farmer" ? "active" : ""}
+            type="button"
+            className={`role-btn ${role === "farmer" ? "active" : ""}`}
             onClick={() => setRole("farmer")}
           >
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 21c0-5 3-7 3-11a3 3 0 0 0-6 0c0 4 3 6 3 11Z"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M12 12c0-3-2-4-2-4"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+            </svg>
             Farmer
           </button>
 
           <button
-            className={role === "buyer" ? "active" : ""}
+            type="button"
+            className={`role-btn ${role === "buyer" ? "active" : ""}`}
             onClick={() => setRole("buyer")}
           >
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M6 8h12l-1 12H7L6 8Z"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M9 8a3 3 0 0 1 6 0"
+                stroke="currentColor"
+                strokeWidth="1.6"
+              />
+            </svg>
             Buyer
           </button>
         </div>
 
-
         {error && <p className="error-message">{error}</p>}
-
         {success && <p className="success-message">{success}</p>}
 
-
-
         <form onSubmit={handleRegister}>
-          <input
-            type="text"
-            placeholder="Full name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            required
-          />
+          <div className="input-group">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="8" r="3.4" stroke="currentColor" strokeWidth="1.5" />
+              <path
+                d="M5 20c1.2-4 4-5.8 7-5.8s5.8 1.8 7 5.8"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+            <input
+              type="text"
+              placeholder="Full name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              required
+            />
+          </div>
 
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-          />
+          <div className="input-group">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3.5 6.5h17v11h-17v-11Z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M4 7l8 6 8-6"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
+          </div>
 
-          <input
-            type="password"
-            placeholder="Create a password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
+          <div className="input-group">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect
+                x="5"
+                y="10.5"
+                width="14"
+                height="9"
+                rx="2"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M8 10.5V8a4 4 0 0 1 8 0v2.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+            </svg>
+            <input
+              type="password"
+              placeholder="Create a password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+          </div>
 
-          <input
-            type="password"
-            placeholder="Confirm password"
-            value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
-            required
-          />
+          <div className="input-group">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect
+                x="5"
+                y="10.5"
+                width="14"
+                height="9"
+                rx="2"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M8 10.5V8a4 4 0 0 1 8 0v2.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M12 14v2"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+            <input
+              type="password"
+              placeholder="Confirm password"
+              value={confirmPassword}
+              onChange={(event) => setConfirmPassword(event.target.value)}
+              required
+            />
+          </div>
 
-          <button type="submit" className="register-button">
-            Register
+          <button type="submit" className="register-button" disabled={loading}>
+            {loading ? "Creating account..." : "Register"}
           </button>
         </form>
 
@@ -169,4 +289,5 @@ function Register() {
   );
 }
 
-export default Register;
+export default Register;   
+ 
