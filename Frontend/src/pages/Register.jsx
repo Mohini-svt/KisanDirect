@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../api/auth";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
 
 function Register() {
+  const navigate = useNavigate();
+
   const [role, setRole] = useState("farmer");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -13,32 +15,7 @@ function Register() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-
-  {/*const handleRegister = (event) => {
-  event.preventDefault();
-
-  setError("");
-  setSuccess("");
-
-  if (password !== confirmPassword) {
-    setError("Passwords do not match!");
-    return;
-  }
-
-  const userData = {
-    name,
-    email,
-    password,
-    role,
-  };
-
-  registerUser(userData);
-
-  setSuccess("Registration successful!");
-};*/}
   const handleRegister = async (event) => {
     event.preventDefault();
 
@@ -289,5 +266,4 @@ function Register() {
   );
 }
 
-export default Register;   
- 
+export default Register;
