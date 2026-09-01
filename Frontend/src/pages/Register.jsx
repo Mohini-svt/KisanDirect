@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 import { registerUser } from "../api/auth";
 import { useState } from "react";
 import { Link } from "react-router-dom";

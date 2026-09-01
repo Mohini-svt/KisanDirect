@@ -2,23 +2,16 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-<<<<<<< Updated upstream
 
-function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-    </Routes>
-=======
-import AdminDashboard from "./pages/Admin/AdminDashboard";
-import UserManagement from "./pages/Admin/UserManagement";
-import OrderMonitoring from "./pages/Admin/OrderMonitoring";
-import LogisticsStatus from "./pages/Admin/LogisticsStatus";
-import FarmerDashboard from "./pages/Farmer/FarmerDashboard";
-import BuyerDashboard from "./pages/Buyer/BuyerDashboard";
-import CropDetails from "./pages/Buyer/CropDetails";
-import Home from "./pages/Home";
+
+      import AdminDashboard from "./pages/Admin/AdminDashboard";
+      import UserManagement from "./pages/Admin/UserManagement";
+      import OrderMonitoring from "./pages/Admin/OrderMonitoring";
+      import LogisticsStatus from "./pages/Admin/LogisticsStatus";
+      import FarmerDashboard from "./pages/Farmer/FarmerDashboard";
+      import BuyerDashboard from "./pages/Buyer/BuyerDashboard";
+      import CropDetails from "./pages/Buyer/CropDetails";
+      import Home from "./pages/Home";
 
 
 function App() {
@@ -50,16 +43,6 @@ function App() {
 </Routes>
 
 
-
-
-
-
-
-
-
-
-
->>>>>>> Stashed changes
   );
 }
 
