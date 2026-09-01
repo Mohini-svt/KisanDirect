@@ -1,7 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
 import { registerUser } from "../api/auth";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
 
 function Register() {

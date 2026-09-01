@@ -8,8 +8,7 @@ import LogisticsStatus from "./pages/Admin/LogisticsStatus";
 import FarmerDashboard from "./pages/Farmer/FarmerDashboard";
 import BuyerDashboard from "./pages/Buyer/BuyerDashboard";
 import CropDetails from "./pages/Buyer/CropDetails";
-import Home from "./pages/Home";
-
+ 
 
 function App() {
   return (
