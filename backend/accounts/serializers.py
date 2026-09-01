@@ -37,7 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
 class CropSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crop
-        fields ='__all__'
+        fields =['id','farmer','farmer_name','name','quantity','price_per_kg','created_at']
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:

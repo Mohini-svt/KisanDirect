@@ -26,7 +26,7 @@ function App() {
       <Route path="/farmer" element={<FarmerDashboard />} />
       <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
 
-      {/*<Route path="/buyer" element={<BuyerDashboard />} />*/}
+      <Route path="/buyer" element={<BuyerDashboard />} />
       <Route path="/buyer/dashboard" element={<BuyerDashboard />} />
       <Route path="/buyer/crop/:id" element={<CropDetails />} />
 

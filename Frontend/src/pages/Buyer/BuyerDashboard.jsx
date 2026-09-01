@@ -33,6 +33,7 @@ function BuyerDashboard() {
       rate: 35,
     },
   ];*/}
+  
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
@@ -44,14 +45,14 @@ function BuyerDashboard() {
 
   const filteredCrops = crops.filter((crop) => {
     const cropTitle = crop.name || crop.cropName || "";
-    const cropRate = crop.price || crop.rate || 0;
+    const cropRate = Number(crop.price_per_kg || crop.price || crop.rate || 0);
 
-    const matchesSearch = crop.cropTitle
+    const matchesSearch = cropTitle
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
 
     const matchesPrice =
-      maxPrice === "" || crop.rate <= Number(maxPrice);
+      maxPrice === "" || cropRate <= Number(maxPrice);
 
     const matchesQuantity =
       minQuantity === "" || crop.quantity >= Number(minQuantity);

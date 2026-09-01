@@ -19,6 +19,7 @@ class User(AbstractUser):
 
 class Crop(models.Model):
     farmer = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="crops")
+    farmer_name = models.CharField(max_length=100, default="Farmer")
     name = models.CharField(max_length=100)
     quantity = models.IntegerField()
     price_per_kg = models.DecimalField(max_digits=10,decimal_places=2)

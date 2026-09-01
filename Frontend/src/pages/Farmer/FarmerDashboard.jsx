@@ -6,7 +6,6 @@ function FarmerDashboard() {
   const [cropName, setCropName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [rate, setRate] = useState("");
-
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
@@ -59,6 +58,7 @@ function FarmerDashboard() {
 
     const newCrop = {
       farmer: loggedInUser.id || 1,      // Maps to Django's farmer ForeignKey
+      farmer_name : farmerName,
       name: cropName,                    // Maps to Django's name field
       quantity: parseInt(quantity),      // Maps to Django's quantity
       price_per_kg: parseFloat(rate),   // Maps to Django's price_per_kg
@@ -79,7 +79,7 @@ function FarmerDashboard() {
       });
 
       if (response.ok) {
-        alert("Crop added to database successfully!");
+        alert("Crop added to Database successfully!");
         setFarmerName("");
         setCropName("");
         setQuantity("");
@@ -182,10 +182,10 @@ function FarmerDashboard() {
               ) : (
                 crops.map((crop) => (
                   <tr key={crop.id}>
-                    <td>{crop.farmerName || crop.description || "N/A"}</td>
+                    <td>{crop.farmer_name}</td>
                     <td>{crop.name || crop.cropname}</td>
-                    <td>{crop.quantity} kg</td>
-                    <td>₹{crop.price || crop.rate}/kg</td>
+                    <td>{crop.quantity}kg</td>
+                    <td>₹{crop.price_per_kg}/kg</td>
                     <td>
                       <button
                         className="delete-btn"
