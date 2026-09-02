@@ -1,0 +1,32 @@
+.users-table-container {
+  background: white;
+  margin-top: 30px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.users-table-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.users-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table-container th {
+  text-align: left;
+  padding: 12px;
+  background-color:#2f6b3b;
+}
+
+.users-table-container td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.users-table-container tr:hover {
+  background-color: #fafafa;
+}

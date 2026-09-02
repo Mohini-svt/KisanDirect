@@ -1,0 +1,153 @@
+import { useNavigate } from "react-router-dom";
+ import AdminSidebar from "../../components/Admin/AdminSidebar";
+
+import { useState, useEffect } from "react";
+import AdminSidebar from "../../components/Admin/AdminSidebar";
+
+import "./AdminDashboard.css";
+
+function AdminDashboard() {
+  const navigate = useNavigate();
+const [usersList, setUsersList] = useState([]);
+  const [ordersList, setOrdersList] = useState([]);
+
+useEffect(() => {
+    // Fetch Users
+    fetch("http://127.0.0.1:8000/api/users/")
+      .then((res) => res.json())
+      .then((data) => Array.isArray(data) && setUsersList(data))
+      .catch((e) => console.error(e));
+
+
+    // Fetch Orders
+    fetch("http://127.0.0.1:8000/api/orders/")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setOrdersList(data);
+        } else {
+          setOrdersList(JSON.parse(localStorage.getItem("orders") || "[]"));
+        }
+      })
+      .catch(() => {
+        setOrdersList(JSON.parse(localStorage.getItem("orders") || "[]"));
+      });
+  }, []);
+
+
+
+
+
+    
+    return (
+  <div className="admin-layout">
+    <AdminSidebar />
+
+    <main className="admin-content">
+      <div className="dashboard-header">
+      </div>
+        </div>
+    <h1>Admin Dashboard</h1>
+    <p>Overview of KisanDirect platform</p>
+     
+  <button
+    className="admin-home-button"
+    onClick={() => navigate("/")}
+          >
+          ← Home
+        </button>
+       </div>
+
+
+
+  const totalUsers = usersList.length || 4;
+  const farmersCount = usersList.filter((u) => u.role === "Farmer").length || 2;
+  const buyersCount = usersList.filter((u) => u.role === "Buyer").length || 2;
+  const activeOrdersCount = ordersList.length;
+
+  const stats = [
+    { title: "Total Users", value: totalUsers },
+    { title: "Farmers", value: farmersCount },
+    { title: "Buyers", value: buyersCount },
+    { title: "Active Orders", value: activeOrdersCount },
+  ];
+
+  return (
+    <div className="admin-layout">
+      <AdminSidebar />
+
+      <main className="admin-content">
+        <div className="dashboard-header">
+          <h1>Admin Dashboard</h1>
+          <p>Overview of KisanDirect platform</p>
+        </div>
+
+        <div className="stats-container">
+          {stats.map((stat) => (
+            <div className="stat-card" key={stat.title}>
+              <h3>{stat.title}</h3>
+              <p>{stat.value}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="recent-orders">
+          <h2>Recent Orders</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Farmer</th>
+                <th>Buyer</th>
+                <th>Product</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {ordersList.length === 0 ? (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>
+                    No recent orders.
+                  </td>
+                </tr>
+              ) : (
+                ordersList.slice(0, 5).map((order, index) => (
+                  <tr key={order.id || index}>
+                    <td>#{order.id || order.order_id || index + 1}</td>
+                    <td>
+                      {typeof order.farmer === "object"
+                        ? order.farmer?.name
+                        : order.farmer || "Ramesh Kumar"}
+                    </td>
+                    <td>
+                      {typeof order.buyer === "object"
+                        ? order.buyer?.name
+                        : order.buyer || "Green Grocery"}
+                    </td>
+                    <td>
+                      {typeof order.crop === "object"
+                        ? order.crop?.name
+                        : order.product || order.crop_name || "Produce"}
+                    </td>
+                    <td>
+                      <span
+                        className={`status ${order.status ? order.status.toLowerCase() : "pending"
+                          }`}
+                      >
+                        {order.status || "Pending"}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+export default AdminDashboard;

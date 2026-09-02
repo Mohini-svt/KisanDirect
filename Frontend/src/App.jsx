@@ -1,7 +1,7 @@
-
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+
 
 
       import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -13,34 +13,53 @@ import Register from "./pages/Register";
       import CropDetails from "./pages/Buyer/CropDetails";
       import Home from "./pages/Home";
 
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import UserManagement from "./pages/Admin/UserManagement";
+import OrderMonitoring from "./pages/Admin/OrderMonitoring";
+import LogisticsStatus from "./pages/Admin/LogisticsStatus";
+import FarmerDashboard from "./pages/Farmer/FarmerDashboard";
+import BuyerDashboard from "./pages/Buyer/BuyerDashboard";
+import CropDetails from "./pages/Buyer/CropDetails";
+import Home from "./pages/Home";
+
+{/*function ProtectedAdminRoute({ children }){
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  if (user && user.email == "admin@kisandirectgmail.com"){
+    return children;
+  }
+  return <Navigate to="/login" replace />;
+}*/}
 
 function App() {
   return (
 
-<Routes>
-  {/* Home */}
-  <Route path="/" element={<Home />} />
+    <Routes>
 
-  {/* Authentication */}
-  <Route path="/login" element={<Login />} />
-  <Route path="/register" element={<Register />} />
+      <Route path="/" element={<Login />} />
 
-  {/* Admin */}
-  <Route path="/admin" element={<AdminDashboard />} />
-  <Route path="/admin/dashboard" element={<AdminDashboard />} />
-  <Route path="/admin/users" element={<UserManagement />} />
-  <Route path="/admin/orders" element={<OrderMonitoring />} />
-  <Route path="/admin/logistics" element={<LogisticsStatus />} />
+      {/* Home */}
+      <Route path="/" element={<Home />} />
 
-  {/* Farmer */}
-  <Route path="/farmer" element={<FarmerDashboard />} />
-  <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
+      {/* Authentication */}
 
-  {/* Buyer */}
-  <Route path="/buyer" element={<BuyerDashboard />} />
-  <Route path="/buyer/dashboard" element={<BuyerDashboard />} />
-  <Route path="/buyer/crop/:id" element={<CropDetails />} />
-</Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
+      <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/admin/users" element={<UserManagement />} />
+      <Route path="/admin/orders" element={<OrderMonitoring />} />
+      <Route path="/admin/logistics" element={<LogisticsStatus />} />
+
+
+      {/* Farmer */}
+      <Route path="/farmer" element={<FarmerDashboard />} />
+      <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
+
+      {/* Buyer */}
+      <Route path="/buyer" element={<BuyerDashboard />} />
+      <Route path="/buyer/dashboard" element={<BuyerDashboard />} />
+      <Route path="/buyer/crop/:id" element={<CropDetails />} />
+    </Routes>
 
 
   );

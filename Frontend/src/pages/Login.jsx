@@ -1,12 +1,13 @@
+import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../api/auth";
 import { useState } from "react";
 import "./Login.css";
-import { Link } from "react-router-dom";
 
 function Login() {
   const [role, setRole] = useState("Farmer");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -35,23 +36,31 @@ function Login() {
           role: role.toLowerCase(),
         }),
       });
+
       const data = await response.json();
       if (response.ok) {
         setSuccess("Login Successful!");
-<<<<<<< Updated upstream
         console.log("Logged in user details:", data.user);
-=======
         localStorage.setItem("user", JSON.stringify(data.user || data));
 
         const userRole = (data.user?.role || data.role || role).toLowerCase();
+        const loggedInEmail = data.user?.email || data.email || email;
 
         setTimeout(() => {
-          if (userRole === "farmer") navigate("/farmer/dashboard");
-          else if (userRole === "buyer") navigate("/buyer/dashboard");
-          else if (userRole === "admin") navigate("/admin/dashboard");
-          else navigate("/");
+          if (userRole === "admin") {
+            if (loggedInEmail === "admin@kisandirect.com") {
+              navigate("/admin");
+            } else {
+              setError("Access denied. Authorized admin only.");
+            }
+          } else if (userRole === "farmer") {
+            navigate("/farmer/dashboard");
+          } else if (userRole === "buyer") {
+            navigate("/buyer/dashboard");
+          } else {
+            navigate("/");
+          }
         }, 1000);
->>>>>>> Stashed changes
       } else {
         setError(data.error || "Login Failed. Please check your details.");
       }
@@ -66,12 +75,10 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-box">
-
-         <Link to="/" className="home-link">
-           ← Back to Home
-       </Link>
+        <Link to="/" className="home-link">
+          ← Back to Home
+        </Link>
         <div className="brand">
-          {/* leaf mark */}
           <svg
             className="brand-icon"
             viewBox="0 0 24 24"
@@ -146,7 +153,7 @@ function Login() {
           <div className="input-group">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
-                d="M3.5 6.5h17v11h-17v-11Z"
+                d="M3.5 6.5h17v11h-17z"
                 stroke="currentColor"
                 strokeWidth="1.5"
               />
