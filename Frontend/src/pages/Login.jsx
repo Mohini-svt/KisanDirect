@@ -11,35 +11,6 @@ function Login() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
-  {/*const handleLogin = (event) => {
-  event.preventDefault();
-
-  setError("");
-  setSuccess("");
-
-  if (!email || !password) {
-    setError("Please fill in all fields!");
-    return;
-  }
-
-  const loginData = {
-    email,
-    password,
-    role,
-  };
-loginUser(loginData);
-
-if (role === "Farmer") {
-  navigate("/farmer/dashboard");
-} else if (role === "Buyer") {
-  navigate("/buyer/dashboard");
-}
-
-
-
-  setSuccess("Login successful!");
-};*/}
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (event) => {
@@ -69,15 +40,26 @@ if (role === "Farmer") {
       const data = await response.json();
       if (response.ok) {
         setSuccess("Login Successful!");
+        console.log("Logged in user details:", data.user);
         localStorage.setItem("user", JSON.stringify(data.user || data));
 
         const userRole = (data.user?.role || data.role || role).toLowerCase();
+        const loggedInEmail = data.user?.email || data.email || email;
 
         setTimeout(() => {
-          if (userRole === "farmer") navigate("/farmer");
-          else if (userRole === "buyer") navigate("/buyer");
-          else if (userRole === "admin") navigate("/admin");
-          else navigate("/");
+          if (userRole === "admin") {
+            if (loggedInEmail === "admin@kisandirect.com") {
+              navigate("/admin");
+            } else {
+              setError("Access denied. Authorized admin only.");
+            }
+          } else if (userRole === "farmer") {
+            navigate("/farmer/dashboard");
+          } else if (userRole === "buyer") {
+            navigate("/buyer/dashboard");
+          } else {
+            navigate("/");
+          }
         }, 1000);
       } else {
         setError(data.error || "Login Failed. Please check your details.");
@@ -93,8 +75,10 @@ if (role === "Farmer") {
   return (
     <div className="login-container">
       <div className="login-box">
+        <Link to="/" className="home-link">
+          ← Back to Home
+        </Link>
         <div className="brand">
-          {/* leaf mark */}
           <svg
             className="brand-icon"
             viewBox="0 0 24 24"
@@ -169,7 +153,7 @@ if (role === "Farmer") {
           <div className="input-group">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
-                d="M3.5 6.5h17v11h-17v-11Z"
+                d="M3.5 6.5h17v11h-17z"
                 stroke="currentColor"
                 strokeWidth="1.5"
               />

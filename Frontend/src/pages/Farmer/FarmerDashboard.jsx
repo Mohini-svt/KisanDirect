@@ -15,6 +15,11 @@ function FarmerDashboard() {
   const [voiceStatus, setVoiceStatus] = useState("");
   const [voiceLang, setVoiceLang] = useState("en-IN"); // "en-IN" or "hi-IN"
 
+
+  const [voiceActive, setVoiceActive] = useState(false);
+  const [voiceStatus, setVoiceStatus] = useState("");
+  const [voiceLang, setVoiceLang] = useState("en-IN"); // "en-IN" or "hi-IN"
+
   useEffect(() => {
     fetchCrops();
   }, []);
@@ -65,12 +70,12 @@ function FarmerDashboard() {
 
     const newCrop = {
       farmer: loggedInUser.id || 1,      // Maps to Django's farmer ForeignKey
-      farmer_name : farmerName,
+      farmer_name: farmerName,
       name: cropName,                    // Maps to Django's name field
       quantity: parseInt(quantity),      // Maps to Django's quantity
       price_per_kg: parseFloat(rate),   // Maps to Django's price_per_kg
     };
-   {/* const newCrop = {
+    {/* const newCrop = {
       name: cropName,
       price: parseFloat(rate),
       quantity: parseInt(quantity),
@@ -278,6 +283,7 @@ function FarmerDashboard() {
 
   return (
     <div className="farmer-dashboard">
+
     
         <div className="dashboard-header">
         <h1>🌱 KisanDirect Farmer Dashboard</h1>
@@ -289,6 +295,19 @@ function FarmerDashboard() {
           ← Home
       </button>
     </div>
+
+
+      <div className="dashboard-header">
+        <h1>🌱 KisanDirect Farmer Dashboard</h1>
+
+        <button
+          className="home-button"
+          onClick={() => navigate("/")}
+        >
+          ← Home
+        </button>
+      </div>
+
 
 
 

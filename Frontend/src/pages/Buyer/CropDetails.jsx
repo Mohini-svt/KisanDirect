@@ -9,12 +9,14 @@ function CropDetails() {
   const [crop, setCrop] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [orderQuantity, setOrderQuantity] = useState(1);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/crops/${id}/')
+    fetch(`http://127.0.0.1:8000/api/crops/${id}/`)
       .then((res) => {
-        if (!res.ok)
+        if (!res.ok) {
           throw new Error("Crop details not found");
+        }
         return res.json();
       })
       .then((data) => {
@@ -23,50 +25,25 @@ function CropDetails() {
       })
       .catch((err) => {
         console.error("Error fetching crop details:", err);
-        setError("Failed tp load crop details.");
+        setError("Failed to load crop details.");
         setLoading(false);
       });
   }, [id]);
 
-  //dummy data
-  {/*const crops = [
-    {
-      id: "1",
-      cropName: "Potato",
-      farmerName: "Ramesh Kumar",
-      quantity: 100,
-      rate: 25,
-      location: "Muzaffarpur",
-      description: "Fresh quality potatoes directly supplied by the farmer.",
-    },
-    {
-      id: "2",
-      cropName: "Tomato",
-      farmerName: "Suresh Patel",
-      quantity: 80,
-      rate: 30,
-      location: "Patna",
-      description: "Fresh and organically grown tomatoes.",
-    },
-    {
-      id: "3",
-      cropName: "Wheat",
-      farmerName: "Amit Singh",
-      quantity: 200,
-      rate: 35,
-      location: "Darbhanga",
-      description: "High quality wheat harvested this season.",
-    },
-  ];*/}
+  const handleOrder = () => {
+    alert(`Order placed successfully for ${crop.name || crop.cropName}!`);
+  };
 
-  {/*const crop = crops.find((item) => item.id === id);*/}
+  if (loading) {
+    return <h2 style={{ textAlign: "center", marginTop: "40px" }}>Loading crop details...</h2>;
+  }
 
-  if (!crop) {
+  if (error || !crop) {
     return (
       <div className="crop-details">
         <div className="crop-details-card">
           <h1>Crop Not Found</h1>
-          <button onClick={() => navigate("/buyer")}>
+          <button className="back-button" onClick={() => navigate("/buyer")}>
             Back to Marketplace
           </button>
         </div>
@@ -74,18 +51,10 @@ function CropDetails() {
     );
   }
 
-  const handleOrder = () => {
-    alert(`Order placed successfully for ${crop.name || crop.cropName}!`);
-  };
-
   return (
     <div className="crop-details">
       <div className="crop-details-card">
-
-        <button
-          className="back-button"
-          onClick={() => navigate("/buyer")}
-        >
+        <button className="back-button" onClick={() => navigate("/buyer")}>
           ← Back to Marketplace
         </button>
 
@@ -93,43 +62,44 @@ function CropDetails() {
 
         <div className="crop-info">
           <p>
-            <strong>Farmer:</strong> {crop.farmer || crop.farmerName}
+            <strong>Farmer: </strong>
+            {crop.farmer_name || "Unknown Farmer"}
           </p>
-
           <p>
-            <strong>Available Quantity:</strong> {crop.quantity} kg
+            <strong>Available Quantity: </strong>
+            {crop.quantity} kg
           </p>
-
           <p>
-            <strong>Price:</strong> ₹{crop.price || crop.rate}/kg
+            <strong>Price: </strong>
+            ₹{crop.price_per_kg || crop.price || crop.rate}/kg
           </p>
-
-          <p>
-            <strong>Location:</strong> {crop.location}
-          </p>
-
-          <p>
-            <strong>Description:</strong> {crop.description}
-          </p>
+          {crop.location && (
+            <p>
+              <strong>Location: </strong>
+              {crop.location}
+            </p>
+          )}
+          {crop.description && (
+            <p>
+              <strong>Description: </strong>
+              {crop.description}
+            </p>
+          )}
         </div>
 
         <div className="order-section">
           <h3>Place Your Order</h3>
-
           <label>Enter Quantity (kg)</label>
-
           <input
             type="number"
             placeholder="Enter quantity"
             min="1"
             max={crop.quantity}
+            value={orderQuantity}
+            onChange={(e) => setOrderQuantity(e.target.value)}
           />
-
-          <button onClick={handleOrder}>
-            Place Order
-          </button>
+          <button onClick={handleOrder}>Place Order</button>
         </div>
-
       </div>
     </div>
   );
