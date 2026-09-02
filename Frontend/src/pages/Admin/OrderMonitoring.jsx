@@ -8,17 +8,31 @@ function OrderMonitoring() {
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/orders/")
       .then((res) => res.json())
-      .then((data) => setOrders(data))
-      .catch((err) => console.error(err));
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setOrders(data);
+        } else {
+          loadLocalStorageOrders();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        loadLocalStorageOrders();
+      });
+
+    function loadLocalStorageOrders() {
+      const localData = JSON.parse(localStorage.getItem("orders") || "[]");
+      setOrders(localData);
+    }
   }, []);
 
   const filteredOrders =
     selectedStatus === "All"
       ? orders
-      : orders.filter((order) => order.status?.toLowerCase() === selectedStatus.toLocaleLowerCase());
-
-
-
+      : orders.filter(
+        (order) =>
+          order.status?.toLowerCase() === selectedStatus.toLowerCase()
+      );
 
   return (
     <div className="admin-layout">
@@ -48,9 +62,6 @@ function OrderMonitoring() {
             </select>
           </div>
 
-
-
-
           <table>
             <thead>
               <tr>
@@ -64,20 +75,43 @@ function OrderMonitoring() {
             </thead>
 
             <tbody>
-              {filteredOrders.map((order) => (
-                <tr key={order.id}>
-                  <td>#{order.id}</td>
-                  <td>{typeof order.farmer === "object" ? order.farmer?.name || order.farmer?.username : order.farmer || "N/A"}</td>
-                  <td>{typeof order.buyer === "object" ? order.buyer?.name || order.buyer?.username : order.buyer || "N/A"}</td>
-                  <td>{typeof order.crop === "object" ? order.crop?.name : order.product || order.crop_name || "N/A"}</td>
-                  <td>{order.quantity} kg</td>
-                  <td>
-                    <span className={`status ${order.status ? order.status.toLowerCase() : "pending"}`}>
-                      {order.status || "Pending"}
-                    </span>
+              {filteredOrders.length === 0 ? (
+                <tr>
+                  <td colSpan="6" style={{ textAlign: "center", padding: "20px" }}>
+                    No orders found.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filteredOrders.map((order, index) => (
+                  <tr key={order.id || index}>
+                    <td>#{order.id || order.order_id || index + 1}</td>
+                    <td>
+                      {typeof order.farmer === "object"
+                        ? order.farmer?.name || order.farmer?.username
+                        : order.farmer || "Ramesh Kumar"}
+                    </td>
+                    <td>
+                      {typeof order.buyer === "object"
+                        ? order.buyer?.name || order.buyer?.username
+                        : order.buyer || "Green Grocery"}
+                    </td>
+                    <td>
+                      {typeof order.crop === "object"
+                        ? order.crop?.name
+                        : order.product || order.crop_name || order.crop || "Tomatoes"}
+                    </td>
+                    <td>{order.quantity || order.qty || "100"} kg</td>
+                    <td>
+                      <span
+                        className={`status ${order.status ? order.status.toLowerCase() : "pending"
+                          }`}
+                      >
+                        {order.status || "Pending"}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

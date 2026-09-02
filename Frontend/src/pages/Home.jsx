@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Home.css";
 
 /**
@@ -23,6 +23,17 @@ import "./Home.css";
  *    (implied live/predicted pricing that isn't part of the app)
  */
 export default function Home() {
+  const navigate = useNavigate();
+
+  const handleAdminClick = (e) => {
+    e.preventDefault();
+    const pass = prompt("Enter Admin Passcode:");
+    if (pass === "admin123") { 
+      navigate("/admin");
+    } else if (pass !== null) {
+      alert("Invalid Admin Passcode!");
+    }
+  };
   return (
     <div className="kd-page">
       {/* NAVBAR */}
@@ -36,7 +47,7 @@ export default function Home() {
           <li><a href="#top">Home</a></li>
           <li><a href="#how">How It Works</a></li>
           <li><a href="#features">Features</a></li>
-          <li><a href="#admin">Admin</a></li>
+          <li><a href="/admin" onClick={handleAdminClick}>Admin</a></li>
         </ul>
 
         <Link to="/login" className="nav-btn">
@@ -61,7 +72,7 @@ export default function Home() {
           </p>
 
           <div className="hero-buttons">
-            <Link to="/register" className="secondary-btn">
+            <Link to="/login" className="secondary-btn">
                Join as Farmer
          </Link>
           </div>
@@ -211,7 +222,7 @@ export default function Home() {
             connect directly with buyers.
           </p>
         </div>
-        <Link to="/register">Get Started →</Link>
+        <Link to="/login">Get Started →</Link>
       </section>
 
       {/* FOOTER */}

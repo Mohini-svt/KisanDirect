@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -8,8 +8,15 @@ import LogisticsStatus from "./pages/Admin/LogisticsStatus";
 import FarmerDashboard from "./pages/Farmer/FarmerDashboard";
 import BuyerDashboard from "./pages/Buyer/BuyerDashboard";
 import CropDetails from "./pages/Buyer/CropDetails";
- 
+import Home from "./pages/Home";
 
+{/*function ProtectedAdminRoute({ children }){
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  if (user && user.email == "admin@kisandirectgmail.com"){
+    return children;
+  }
+  return <Navigate to="/login" replace />;
+}*/}
 function App() {
   return (
 
@@ -21,12 +28,11 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* Admin */}
       <Route path="/admin" element={<AdminDashboard />} />
-      <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/users" element={<UserManagement />} />
       <Route path="/admin/orders" element={<OrderMonitoring />} />
       <Route path="/admin/logistics" element={<LogisticsStatus />} />
+
 
       {/* Farmer */}
       <Route path="/farmer" element={<FarmerDashboard />} />

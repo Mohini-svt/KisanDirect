@@ -1,92 +1,121 @@
-
- import AdminSidebar from "../../components/Admin/AdminSidebar";
+import { useState, useEffect } from "react";
+import AdminSidebar from "../../components/Admin/AdminSidebar";
 import "./AdminDashboard.css";
 
-import users from "../../data/users";
-import orders from "../../data/orders";
-
-
-const stats = [
-  {
-    title: "Total Users",
-    value: users.length,
-  },
-  {
-    title: "Farmers",
-    value: users.filter((user) => user.role === "Farmer").length,
-  },
-  {
-    title: "Buyers",
-    value: users.filter((user) => user.role === "Buyer").length,
-  },
-  {
-    title: "Active Orders",
-    value: orders.filter(
-      (order) => order.status !== "Delivered"
-    ).length,
-  },
-];
-
-
-
-
 function AdminDashboard() {
-    
-    return (
-  <div className="admin-layout">
-    <AdminSidebar />
+  const [usersList, setUsersList] = useState([]);
+  const [ordersList, setOrdersList] = useState([]);
 
-    <main className="admin-content">
-      <div className="dashboard-header">
-        <h1>Admin Dashboard</h1>
-        <p>Overview of KisanDirect platform</p>
-      </div>
+  useEffect(() => {
+    // Fetch Users
+    fetch("http://127.0.0.1:8000/api/users/")
+      .then((res) => res.json())
+      .then((data) => Array.isArray(data) && setUsersList(data))
+      .catch((e) => console.error(e));
 
-      <div className="stats-container">
-        {stats.map((stat) => (
-          <div className="stat-card" key={stat.title}>
-            <h3>{stat.title}</h3>
-            <p>{stat.value}</p>
-          </div>
-        ))}
-      </div>
+    // Fetch Orders
+    fetch("http://127.0.0.1:8000/api/orders/")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setOrdersList(data);
+        } else {
+          setOrdersList(JSON.parse(localStorage.getItem("orders") || "[]"));
+        }
+      })
+      .catch(() => {
+        setOrdersList(JSON.parse(localStorage.getItem("orders") || "[]"));
+      });
+  }, []);
 
-<div className="recent-orders">
-  <h2>Recent Orders</h2>
+  const totalUsers = usersList.length || 4;
+  const farmersCount = usersList.filter((u) => u.role === "Farmer").length || 2;
+  const buyersCount = usersList.filter((u) => u.role === "Buyer").length || 2;
+  const activeOrdersCount = ordersList.length;
 
-  <table>
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>Farmer</th>
-        <th>Buyer</th>
-        <th>Product</th>
-        <th>Status</th>
-      </tr>
-    </thead>
+  const stats = [
+    { title: "Total Users", value: totalUsers },
+    { title: "Farmers", value: farmersCount },
+    { title: "Buyers", value: buyersCount },
+    { title: "Active Orders", value: activeOrdersCount },
+  ];
 
-    <tbody>
-      {orders.slice(0, 3).map((order) => (
-        <tr key={order.id}>
-          <td>{order.id}</td>
-          <td>{order.farmer}</td>
-          <td>{order.buyer}</td>
-          <td>{order.product}</td>
-          <td>
-            <span className={`status ${order.status.toLowerCase()}`}>
-              {order.status}
-            </span>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
+  return (
+    <div className="admin-layout">
+      <AdminSidebar />
 
-    </main>
-  </div>
-);
+      <main className="admin-content">
+        <div className="dashboard-header">
+          <h1>Admin Dashboard</h1>
+          <p>Overview of KisanDirect platform</p>
+        </div>
 
+        <div className="stats-container">
+          {stats.map((stat) => (
+            <div className="stat-card" key={stat.title}>
+              <h3>{stat.title}</h3>
+              <p>{stat.value}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="recent-orders">
+          <h2>Recent Orders</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Farmer</th>
+                <th>Buyer</th>
+                <th>Product</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {ordersList.length === 0 ? (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>
+                    No recent orders.
+                  </td>
+                </tr>
+              ) : (
+                ordersList.slice(0, 5).map((order, index) => (
+                  <tr key={order.id || index}>
+                    <td>#{order.id || order.order_id || index + 1}</td>
+                    <td>
+                      {typeof order.farmer === "object"
+                        ? order.farmer?.name
+                        : order.farmer || "Ramesh Kumar"}
+                    </td>
+                    <td>
+                      {typeof order.buyer === "object"
+                        ? order.buyer?.name
+                        : order.buyer || "Green Grocery"}
+                    </td>
+                    <td>
+                      {typeof order.crop === "object"
+                        ? order.crop?.name
+                        : order.product || order.crop_name || "Produce"}
+                    </td>
+                    <td>
+                      <span
+                        className={`status ${order.status ? order.status.toLowerCase() : "pending"
+                          }`}
+                      >
+                        {order.status || "Pending"}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  );
 }
 
 export default AdminDashboard;

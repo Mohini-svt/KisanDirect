@@ -8,8 +8,22 @@ function LogisticsStatus() {
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/logistics/")
       .then((res) => res.json())
-      .then((data) => setLogistics(data))
-      .catch((err) => console.error(err));
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setLogistics(data);
+        } else {
+          loadLocalStorageLogistics();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        loadLocalStorageLogistics();
+      });
+
+    function loadLocalStorageLogistics() {
+      const savedOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+      setLogistics(savedOrders);
+    }
   }, []);
 
   return (
@@ -35,27 +49,38 @@ function LogisticsStatus() {
             </thead>
 
             <tbody>
-              {logistics.map((item) => (
-                <tr key={item.id || item.orderId}>
-                  <td>#{item.order_id || item.order || item.id || item.ordered}</td>
-                  <td>{typeof item.crop === "object" ? item.crop?.name : item.product || item.crop_name || "N/A"}</td>
-                  <td>{typeof item.driver === "object" ? item.driver?.name : item.driver || "Unassigned"}</td>
-                  <td>{item.destination || item.delivery_address || "N/A"}</td>
-
-                  <td>
-                    <span
-                      className={`status ${item.status?.toLowerCase() === "delivered"
-                          ? "delivered"
-                          : item.status?.toLowerCase().includes("transit")
-                            ? "processing"
-                            : "pending"
-                        }`}
-                    >
-                      {item.status}
-                    </span>
+              {logistics.length === 0 ? (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>
+                    No active deliveries.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                logistics.map((item, index) => (
+                  <tr key={item.id || item.orderId || index}>
+                    <td>#{item.order_id || item.order || item.id || index + 1}</td>
+                    <td>
+                      {typeof item.crop === "object"
+                        ? item.crop?.name
+                        : item.product || item.crop_name || "Produce"}
+                    </td>
+                    <td>
+                      {typeof item.driver === "object"
+                        ? item.driver?.name
+                        : item.driver || "Express Logistics"}
+                    </td>
+                    <td>{item.destination || item.delivery_address || "Local Warehouse"}</td>
+                    <td>
+                      <span
+                        className={`status ${item.status ? item.status.toLowerCase() : "pending"
+                          }`}
+                      >
+                        {item.status || "In Transit"}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
